@@ -1,0 +1,237 @@
+# Brazilian E-Commerce Analysis Configuration
+# =============================================
+
+# Data Configuration
+data:
+  # Path to the dataset directory
+  base_path: "/kaggle/input/brazilian-ecommerce/"
+  # Alternative paths for local development
+  local_path: "./data/"
+  
+  # Dataset files
+  files:
+    customers: "olist_customers_dataset.csv"
+    geolocation: "olist_geolocation_dataset.csv"
+    order_items: "olist_order_items_dataset.csv"
+    order_payments: "olist_order_payments_dataset.csv"
+    order_reviews: "olist_order_reviews_dataset.csv"
+    orders: "olist_orders_dataset.csv"
+    products: "olist_products_dataset.csv"
+    sellers: "olist_sellers_dataset.csv"
+    product_translation: "product_category_name_translation.csv"
+
+# Analysis Configuration
+analysis:
+  # Date range for analysis (optional filtering)
+  date_range:
+    start_date: "2016-09-04"  # First order date
+    end_date: "2018-10-17"    # Last order date
+  
+  # Geographic analysis settings
+  geographic:
+    # Brazilian geographic boundaries for data cleaning
+    boundaries:
+      max_latitude: 5.27439
+      min_latitude: -33.75117
+      max_longitude: -34.79315
+      min_longitude: -73.98283
+  
+  # Temporal analysis settings
+  temporal:
+    # Time periods for analysis
+    time_periods:
+      dawn: [0, 6]
+      morning: [6, 12]
+      afternoon: [12, 18]
+      night: [18, 24]
+
+# Sentiment Analysis Configuration
+sentiment:
+  # Model parameters
+  model:
+    # Text preprocessing
+    preprocessing:
+      remove_stopwords: true
+      min_text_length: 3
+      max_features: 5000
+      min_df: 5
+      max_df: 0.7
+      ngram_range: [1, 2]
+    
+    # Model selection
+    algorithms:
+      - "logistic_regression"
+      - "naive_bayes"
+      - "random_forest"
+    
+    # Training parameters
+    training:
+      test_size: 0.2
+      random_state: 42
+      cross_validation_folds: 5
+    
+    # Sentiment labeling
+    labeling:
+      positive_threshold: 4  # Scores >= 4 are positive
+      negative_threshold: 3  # Scores <= 3 are negative
+  
+  # Portuguese stopwords (additional custom ones)
+  custom_stopwords:
+    - "produto"
+    - "compra"
+    - "pedido"
+    - "entrega"
+    - "loja"
+
+# Visualization Configuration
+visualization:
+  # Plot settings
+  style:
+    theme: "seaborn-v0_8-darkgrid"
+    palette: "husl"
+    figure_size: [15, 10]
+    dpi: 100
+  
+  # Colors for different chart types
+  colors:
+    positive: "#6BCF7F"
+    negative: "#FF6B6B"
+    neutral: "#FFD93D"
+    primary: "#4ECDC4"
+    secondary: "#45B7D1"
+  
+  # Interactive plots (Plotly)
+  plotly:
+    template: "plotly_white"
+    showlegend: true
+    height: 600
+    width: 1000
+
+# Model Persistence
+models:
+  # Directory to save trained models
+  save_directory: "./models/"
+  
+  # Model files
+  files:
+    sentiment_pipeline: "sentiment_pipeline.pkl"
+    text_preprocessor: "text_preprocessor.pkl"
+    vectorizer: "tfidf_vectorizer.pkl"
+    classifier: "sentiment_classifier.pkl"
+  
+  # Model versioning
+  versioning:
+    enabled: true
+    format: "YYYY-MM-DD_HH-MM-SS"
+
+# Logging Configuration
+logging:
+  level: "INFO"
+  format: "%(asctime)s - %(name)s - %(levelname)s - %(message)s"
+  
+  # Log files
+  files:
+    main: "logs/analysis.log"
+    sentiment: "logs/sentiment.log"
+    errors: "logs/errors.log"
+  
+  # Rotation settings
+  rotation:
+    max_bytes: 10485760  # 10MB
+    backup_count: 5
+
+# Performance Settings
+performance:
+  # Memory management
+  memory:
+    chunk_size: 10000
+    low_memory_mode: false
+  
+  # Parallel processing
+  parallel:
+    n_jobs: -1  # Use all available cores
+    backend: "threading"
+  
+  # Caching
+  cache:
+    enabled: true
+    directory: "./cache/"
+    max_size_mb: 1000
+
+# Output Configuration
+output:
+  # Report generation
+  reports:
+    directory: "./reports/"
+    formats: ["html", "pdf"]
+    include_plots: true
+  
+  # Export settings
+  exports:
+    directory: "./exports/"
+    formats: ["csv", "json", "pickle"]
+  
+  # Visualization exports
+  plots:
+    directory: "./plots/"
+    formats: ["png", "svg", "html"]
+    dpi: 300
+
+# API Configuration (for deployment)
+api:
+  # Server settings
+  server:
+    host: "0.0.0.0"
+    port: 5000
+    debug: false
+  
+  # Model loading
+  model_path: "./models/sentiment_pipeline.pkl"
+  
+  # Rate limiting
+  rate_limit:
+    enabled: true
+    requests_per_minute: 100
+  
+  # Response settings
+  response:
+    include_confidence: true
+    include_probabilities: true
+    max_text_length: 5000
+
+# Development Settings
+development:
+  # Testing
+  testing:
+    sample_size: 1000
+    random_seed: 42
+  
+  # Debugging
+  debug:
+    verbose: true
+    save_intermediate: true
+    plot_inline: true
+  
+  # Profiling
+  profiling:
+    enabled: false
+    memory_profiling: false
+    time_profiling: false
+
+# Feature Flags
+features:
+  # Enable/disable specific features
+  sentiment_analysis: true
+  geographic_analysis: true
+  temporal_analysis: true
+  economic_analysis: true
+  product_analysis: true
+  interactive_plots: true
+  word_clouds: true
+  model_comparison: true
+  
+  # Experimental features
+  experimental:
+    advanced_nlp: false
+    deep_learning: false
+    time_series_forecasting: false
